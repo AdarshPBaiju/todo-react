@@ -17,35 +17,55 @@ function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
+  // Load todos from localStorage when the app first mounts
+  // Replace this with API call if you want to fetch todos from a server
   useEffect(() => {
-    const storedTodos = sessionStorage.getItem('todos');
+    const storedTodos = localStorage.getItem('todos'); // For API: fetch('/api/todos')
     if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
+      try {
+        setTodos(JSON.parse(storedTodos)); // For API: setTodos(await response.json())
+      } catch (error) {
+        console.error('Error parsing todos from localStorage', error);
+      }
     }
-  }, []);
+  }, []); // Empty dependency array ensures this runs once when the component mounts
 
+  // Save todos to localStorage whenever the todos state changes
+  // For API usage, replace with POST/PUT request to save todos on a server
   useEffect(() => {
-    sessionStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
+    if (todos.length > 0) {
+      localStorage.setItem('todos', JSON.stringify(todos)); // For API: await fetch('/api/todos', { method: 'POST', body: JSON.stringify(todos) })
+    }
+  }, [todos]); // This runs every time `todos` changes
 
+  // Add a new todo
   const addTodo = (todo: Todo) => {
-    setTodos([...todos, todo]);
+    const updatedTodos = [...todos, todo];
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos)); // For API: await fetch('/api/todos', { method: 'POST', body: JSON.stringify(updatedTodos) })
   };
 
+  // Toggle the completed status of a todo
   const toggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos)); // For API: await fetch('/api/todos', { method: 'PUT', body: JSON.stringify(updatedTodos) })
   };
 
+  // Delete a todo
   const deleteTodo = (id: string) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos)); // For API: await fetch(`/api/todos/${id}`, { method: 'DELETE' })
   };
 
+  // Edit a todo
   const editTodo = (id: string, updatedTodo: Todo) => {
-    setTodos(todos.map((todo) => (todo.id === id ? updatedTodo : todo)));
+    const updatedTodos = todos.map((todo) => (todo.id === id ? updatedTodo : todo));
+    setTodos(updatedTodos);
+    localStorage.setItem('todos', JSON.stringify(updatedTodos)); // For API: await fetch(`/api/todos/${id}`, { method: 'PUT', body: JSON.stringify(updatedTodos) })
   };
 
   const filteredTodos = todos

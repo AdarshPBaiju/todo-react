@@ -11,7 +11,7 @@ interface TodoFormProps {
 const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [text, setText] = useState('');
-  const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
+  const [date, setDate] = useState(format(new Date(), 'dd-MM-yyyy'));
   const [time, setTime] = useState(format(new Date(), 'HH:mm'));
 
   const handleSubmit = () => {
@@ -42,7 +42,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Add New Todo</ModalHeader>
+              <ModalHeader className="flex text-black flex-col gap-1">Add New Todo</ModalHeader>
               <ModalBody>
                 <div className="space-y-4">
                   <Input

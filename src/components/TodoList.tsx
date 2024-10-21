@@ -10,6 +10,27 @@ interface TodoListProps {
   editTodo: (id: string, updatedTodo: Todo) => void;
 }
 
+// Helper function to format date and time
+const formatDateTime = (date: string, time: string) => {
+  const fullDate = new Date(`${date}T${time}`);
+  
+  // Format date as Month day, Year
+  const formattedDate = fullDate.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  
+  // Format time in 12-hour format with AM/PM
+  const formattedTime = fullDate.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
+  return `${formattedDate} at ${formattedTime}`;
+};
+
 const TodoList: React.FC<TodoListProps> = ({ todos, toggleTodo, deleteTodo, editTodo }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
@@ -54,7 +75,7 @@ const TodoList: React.FC<TodoListProps> = ({ todos, toggleTodo, deleteTodo, edit
                       {todo.text}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {todo.date} at {todo.time}
+                      {formatDateTime(todo.date, todo.time)}
                     </p>
                   </div>
                 </div>
@@ -88,7 +109,7 @@ const TodoList: React.FC<TodoListProps> = ({ todos, toggleTodo, deleteTodo, edit
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Edit Todo</ModalHeader>
+              <ModalHeader className="flex flex-col text-black gap-1">Edit Todo</ModalHeader>
               <ModalBody>
                 {editingTodo && (
                   <div className="space-y-4">
