@@ -38,7 +38,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
       >
         Add New Todo
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} className='top-0'>
         <ModalContent>
           {(onClose) => (
             <>
