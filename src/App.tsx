@@ -4,6 +4,7 @@ import TodoForm from './components/TodoForm';
 import TodoList from './components/TodoList';
 import DatePicker from './components/DatePicker';
 import { format, parse, compareAsc } from 'date-fns';
+import InstallPWA from './components/InstallPWA';
 
 export interface Todo {
   id: string;
@@ -92,6 +93,9 @@ function App() {
             editTodo={editTodo}
           />
         </div>
+        <div className="mt-8 flex justify-center">
+            <InstallPWA />
+          </div>
       </div>
     </NextUIProvider>
   );
