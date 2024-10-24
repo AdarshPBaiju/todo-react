@@ -34,7 +34,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
         color="primary" 
         onPress={onOpen}
         startContent={<PlusIcon size={20} />}
-        className="bg-blue-600 hover:bg-blue-700 text-white"
+        className="bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600"
       >
         Add New Todo
       </Button>
@@ -42,7 +42,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex text-black flex-col gap-1">Add New Todo</ModalHeader>
+              <ModalHeader className="flex text-black dark:text-white flex-col gap-1">Add New Todo</ModalHeader>
               <ModalBody>
                 <div className="space-y-4">
                   <Input
@@ -50,6 +50,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     placeholder="Enter your task"
+                    className="dark:bg-gray-800 dark:text-white"
                   />
                   <div className="flex gap-4">
                     <Input
@@ -57,6 +58,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
                       label="Date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}  // Handle string value from input
+                      className="dark:bg-gray-800 dark:text-white"
                     />
                     <Input
                       type="time"
@@ -64,6 +66,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
                       value={time}
                       onChange={(e) => setTime(e.target.value)}  // Handle time input
                       step="30"
+                      className="dark:bg-gray-800 dark:text-white"
                     />
                   </div>
                 </div>
