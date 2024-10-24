@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input } from '@nextui-org/react';
 import { Todo } from '../App';
 import { PlusIcon } from 'lucide-react';
 import { format } from 'date-fns';
@@ -13,7 +11,7 @@ interface TodoFormProps {
 const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [text, setText] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [time, setTime] = useState(format(new Date(), 'HH:mm'));
 
   const handleSubmit = () => {
@@ -21,8 +19,8 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
     const newTodo: Todo = {
       id: Date.now().toString(),
       text,
-      date: format(date, 'yyyy-MM-dd'),
-      time,
+      date,  // Date is already in 'yyyy-MM-dd' format
+      time,  // Time is in 'HH:mm' format
       completed: false,
     };
     addTodo(newTodo);
@@ -47,35 +45,26 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
               <ModalHeader className="flex text-black flex-col gap-1">Add New Todo</ModalHeader>
               <ModalBody>
                 <div className="space-y-4">
-                  <input
-                    className="w-full border border-gray-300 p-2 rounded"
-                    placeholder="Enter your todo"
+                  <Input
+                    label="Todo"
                     value={text}
                     onChange={(e) => setText(e.target.value)}
+                    placeholder="Enter your task"
                   />
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="w-full sm:w-1/2">
-                      <label className="block mb-2 text-sm font-medium">Date</label>
-                      <DatePicker
-                        selected={date}
-                        onChange={(date) => setDate(date!)}
-                        className="w-full p-2 border border-gray-300 rounded"
-                        dateFormat="yyyy-MM-dd"
-                        showPopperArrow={false}
-                        withPortal // Ensures the date picker appears at the top in small screens
-                      />
-                    </div>
-                    <div className="w-full sm:w-1/2">
-                      <label className="block mb-2 text-sm font-medium">Time</label>
-                      <input
-                        type="time"
-                        className="w-full p-2 border border-gray-300 rounded"
-                        value={time}
-                        onChange={(e) => setTime(e.target.value)}
-                        placeholder="HH:mm"
-                        step="30"
-                      />
-                    </div>
+                  <div className="flex gap-4">
+                    <Input
+                      type="date"
+                      label="Date"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}  // Handle string value from input
+                    />
+                    <Input
+                      type="time"
+                      label="Time"
+                      value={time}
+                      onChange={(e) => setTime(e.target.value)}  // Handle time input
+                      step="30"
+                    />
                   </div>
                 </div>
               </ModalBody>
